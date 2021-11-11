@@ -77,6 +77,26 @@ void bubble_sort(T a[], size_t n){  // Сортировка пузырьком
     }
 }
 
-
+template <typename T>
+void QuickSortR(T A[], size_t n) {
+	int l = 0, r = n - 1;
+	size_t pindex = l + (r - l) / 2;
+	T p = A[pindex];
+	int i = l, j = r;
+	while (i < j) {
+		while (A[i] < p) i++;
+		while (A[j] > p) j--;
+		if (i < j) std::swap(A[i], A[j]), ++i, --j;
+		else if (i == j)++i, --j;
+	}
+	if (pindex < i) {
+		if (i < r) QuickSortR(A + i, n - i);
+		if (j > l) QuickSortR(A, j + 1);
+	}
+	else {
+		if (j > l) QuickSortR(A, j + 1);
+		if (i < r) QuickSortR(A + i, n - i);
+	}
+}
 
 #endif //MY_SOLUTIONS_SORTS_OF_SORTINGS_H
