@@ -2,6 +2,7 @@
 #define MY_SOLUTIONS_SORTS_OF_SORTINGS_H
 #include <utility>
 #include <iostream>
+#include <ctime>
 
 template <typename T>
 void InsertSort(T A[], size_t n){ // Сортировка вставками
@@ -20,6 +21,30 @@ void InsertSort(T A[], size_t n){ // Сортировка вставками
             A[j] = tmp;
         }
     }
+}
+
+template <typename T> 
+void InsertSortA(T A[], size_t n) { // Сортировка вставками Advanced
+	T tmp;
+	for (size_t j = 1; j < n; ++j) {
+		int l = 0, r = j;
+		int m;
+		while (l < r) {
+			m = l + (r - l) / 2;
+			if (A[j] < A[m]) r = m - 1;
+			else l = m + 1;
+		}
+		if (r >= 0) {
+			if (A[j] < A[r]) --r;
+		}
+		if (j > r + 1) {
+			tmp = A[j];
+			for (size_t i = j; i > r + 1; --i) {
+				A[i] = A[i - 1];
+			}
+			A[r + 1] = tmp;
+		}
+	}
 }
 
 template <typename T>
@@ -51,5 +76,7 @@ void bubble_sort(T a[], size_t n){  // Сортировка пузырьком
             break;
     }
 }
+
+
 
 #endif //MY_SOLUTIONS_SORTS_OF_SORTINGS_H
