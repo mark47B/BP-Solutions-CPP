@@ -151,4 +151,41 @@ void QuickSortS(T A[], size_t n) {
 	delete[] StackLeft;
 	delete[] StackRight;
 }
+
+template<typename T>
+void _Merge(T A[], size_t l, size_t m, size_t r, unsigned long long &c1, unsigned long long &c2) {
+	size_t sz = r - l + 1;
+	T* tmp = new T[sz];
+	size_t s1 = l, e1 = m, s2 = m + 1, e2 = r;
+	int ind = 0;
+	while (s1 <= e1 && s2 <= e2) {
+		if (A[s1] < A[s2]) {
+			tmp[ind] = A[s1]; s1++;
+		}
+		else {
+			tmp[ind] = A[s2]; s2++;
+		}
+		++c1; ++c2;
+		ind++;
+	}
+	while (s1 <= e1) tmp[ind] = A[s1], s1++, ind++, c2++;
+	while (s2 <= e2) tmp[ind] = A[s2], s2++, ind++, c2++;
+	for (ind = 0; ind < sz; ind++) A[l + ind] = tmp[ind], c2++;
+	delete[] tmp;
+}
+template<typename T>
+void _Split(T A[], size_t l, size_t r, unsigned long long& c1, unsigned long long& c2) {
+	if (l < r) {
+		size_t m = l + (r - l) / 2;
+		_Split(A, l, m, c1, c2);
+		_Split(A, m + 1, r, c1,c2);
+		_Merge(A, l, m, r, c1, c2);
+	}
+}
+
+template <typename T> 
+void MergeSort(T A[], size_t n) {
+	_Split(A, 0, n - 1, c1, c2);
+}
+
 #endif //MY_SOLUTIONS_SORTS_OF_SORTINGS_H
