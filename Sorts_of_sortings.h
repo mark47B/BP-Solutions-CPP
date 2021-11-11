@@ -99,4 +99,56 @@ void QuickSortR(T A[], size_t n) {
 	}
 }
 
+template <typename T>
+void QuickSortS(T A[], size_t n) {
+	int N = n; size_t sz = 1;
+	while (N) {
+		N >>= 1;
+		++sz;
+	}
+	size_t* StackLeft = new size_t[sz];
+	size_t* StackRight = new size_t[sz];
+	int LastInStack = -1;
+	++LastInStack; StackLeft[LastInStack] = 0; StackRight[LastInStack] = n - 1;
+	while (LastInStack > -1) {
+		size_t l = StackLeft[LastInStack], r = StackRight[LastInStack];
+		--LastInStack;
+
+		size_t pindex = l + (r - l) / 2;
+		T p = A[pindex];
+		size_t i = l, j = r;
+		while (i < j) {
+			while (A[i] < p) {
+				i++;
+			}
+			while (A[j] > p) j--;
+			if (i < j) {
+				std::swap(A[i], A[j]);
+				++i;--j;
+			}
+			else if (i == j) {
+				i++;
+				if(j)--j;
+			}
+		}
+		if (pindex < i) {
+			if (j > l) {
+				++LastInStack; StackLeft[LastInStack] = l; StackRight[LastInStack] = j;
+			}
+			if (i < r) {
+				++LastInStack; StackLeft[LastInStack] = i; StackRight[LastInStack] = r;
+			}
+		}
+		else {
+			if (i < r) {
+				++LastInStack; StackLeft[LastInStack] = i; StackRight[LastInStack] = r;
+			}
+			if (j > l) {
+				++LastInStack; StackLeft[LastInStack] = l; StackRight[LastInStack] = j;
+			}
+		}
+	}
+	delete[] StackLeft;
+	delete[] StackRight;
+}
 #endif //MY_SOLUTIONS_SORTS_OF_SORTINGS_H
